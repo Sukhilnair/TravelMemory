@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mern-frontend:
+    container_name: mern-frontend
+    image: sukhilnair/mern:frontend_v0.1
+    environment:
+      AWS_IP: "0.0.0.0"
+    ports:
+      - "9099:3000"
+
+  mern-backend:
+    container_name: mern-backend
+    image: sukhilnair/mern:backend_v0.1
+    environment:
+      MONGO_URI: "<Mention the DB endpoint>"
+      PORT: 3001
+    ports:
+      - "3001:3001"
