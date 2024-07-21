@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         GIT_REPO = 'https://github.com/Sukhilnair/TravelMemory.git'
-        DOCKERHUB_ID = 'sukhil-dockerhub-cred'
+        DOCKERHUB_ID = 'sukhil-dockerhub'
         DOCKERHUB_USERNAME = 'sukhilnair'
         DOCKERHUB_REPO = 'jenkins-class'
     }
@@ -18,23 +18,27 @@ pipeline {
                 git branch: 'docker_creation', url: "${env.GIT_REPO}"
             }
         }
-        stage('Build frontend Docker') {
-            steps {
-                script {
-                    dir('frontend') {
-                        docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:frontend-${env.BUILD_ID}")
+        stage("parallel build")  {
+                parallel{
+                    stage('Build frontend Docker') {
+                        steps {
+                            script {
+                                dir('frontend') {
+                                    docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:frontend-${env.BUILD_ID}")
+                                }
+                            }
+                        }
+                    }
+                    stage('Build backend Docker') {
+                        steps {
+                            script {
+                                dir('backend') {
+                                    docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:backend-${env.BUILD_ID}")
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }
-        stage('Build backend Docker') {
-            steps {
-                script {
-                    dir('backend') {
-                        docker.build("${env.DOCKERHUB_USERNAME}/${env.DOCKERHUB_REPO}:backend-${env.BUILD_ID}")
-                    }
-                }
-            }
         }
         stage('Pushing the Docker Images') {
             steps {
