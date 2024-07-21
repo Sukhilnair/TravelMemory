@@ -9,6 +9,7 @@ pipeline {
 
     stages {
         stage('Hello') {
+            agent{ label 'node2-agent'}
             steps {
                 echo 'Hello World'
             }
