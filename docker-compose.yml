@@ -12,7 +12,7 @@ services:
     container_name: mern-backend
     image: sukhilnair/mern:backend_v0.1
     environment:
-      MONGO_URI: "<Mention the DB endpoint>"
+      MONGO_URI: "mongodb+srv://sukhilnair:<password>@cluster0.dm4xp4t.mongodb.net/travelmemory"
       PORT: 3001
     ports:
       - "3001:3001"
